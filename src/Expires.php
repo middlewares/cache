@@ -13,12 +13,12 @@ use DateTime;
 class Expires implements MiddlewareInterface
 {
     /**
-     * @var string Default format
+     * @var string
      */
     private $default = '+1 month';
 
     /**
-     * @var array Available expires times
+     * @var array
      */
     private $expires;
 
@@ -33,9 +33,9 @@ class Expires implements MiddlewareInterface
     }
 
     /**
-     * Set the default format.
+     * Set the default expires value.
      *
-     * @param string $format
+     * @param string $expires
      *
      * @return self
      */
