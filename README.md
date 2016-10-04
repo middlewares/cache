@@ -9,9 +9,9 @@
 
 Middleware components with the following cache utilities:
 
-* CachePrevention
-* Expires
-* Cache
+* [CachePrevention](#cacheprevention)
+* [Expires](#expires)
+* [Cache](#cache)
 
 ## Requirements
 
