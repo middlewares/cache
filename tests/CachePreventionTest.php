@@ -3,9 +3,10 @@
 namespace Middlewares\Tests;
 
 use Middlewares\CachePrevention;
-use Zend\Diactoros\Request;
+use Middlewares\Utils\Dispatcher;
+use Middlewares\Utils\CallableMiddleware;
+use Zend\Diactoros\ServerRequest;
 use Zend\Diactoros\Response;
-use mindplay\middleman\Dispatcher;
 
 class CachePreventionTest extends \PHPUnit_Framework_TestCase
 {
@@ -13,10 +14,10 @@ class CachePreventionTest extends \PHPUnit_Framework_TestCase
     {
         $response = (new Dispatcher([
             new CachePrevention(),
-            function () {
+            new CallableMiddleware(function () {
                 return new Response();
-            },
-        ]))->dispatch(new Request());
+            }),
+        ]))->dispatch(new ServerRequest());
 
         $this->assertInstanceOf('Psr\\Http\\Message\\ResponseInterface', $response);
         $this->assertEquals('no-cache, no-store, must-revalidate', $response->getHeaderLine('Cache-Control'));

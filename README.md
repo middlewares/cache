@@ -1,7 +1,7 @@
 # middlewares/cache
 
 [![Latest Version on Packagist][ico-version]][link-packagist]
-[![Software License][ico-license]](LICENSE.md)
+[![Software License][ico-license]](LICENSE)
 [![Build Status][ico-travis]][link-travis]
 [![Quality Score][ico-scrutinizer]][link-scrutinizer]
 [![Total Downloads][ico-downloads]][link-downloads]
@@ -36,7 +36,7 @@ $dispatcher = new Dispatcher([
     new Middlewares\CachePrevention()
 ]);
 
-$response = $dispatcher->dispatch(new Request());
+$response = $dispatcher->dispatch(new ServerRequest());
 ```
 
 ## Expires
@@ -59,7 +59,7 @@ $dispatcher = new Dispatcher([
     ]))->defaultExpires('+1 hour') //and 1 hour to everything else
 ]);
 
-$response = $dispatcher->dispatch(new Request());
+$response = $dispatcher->dispatch(new ServerRequest());
 ```
 
 ## Cache
@@ -76,7 +76,7 @@ $dispatcher = new Dispatcher([
     new Middlewares\Expires()
 ]);
 
-$response = $dispatcher->dispatch(new Request());
+$response = $dispatcher->dispatch(new ServerRequest());
 ```
 
 ---

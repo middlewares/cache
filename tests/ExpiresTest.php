@@ -3,9 +3,10 @@
 namespace Middlewares\Tests;
 
 use Middlewares\Expires;
-use Zend\Diactoros\Request;
+use Middlewares\Utils\Dispatcher;
+use Middlewares\Utils\CallableMiddleware;
+use Zend\Diactoros\ServerRequest;
 use Zend\Diactoros\Response;
-use mindplay\middleman\Dispatcher;
 
 class ExpiresTest extends \PHPUnit_Framework_TestCase
 {
@@ -42,12 +43,12 @@ class ExpiresTest extends \PHPUnit_Framework_TestCase
     {
         $response = (new Dispatcher([
             new Expires(),
-            function () use ($contentType, $cacheControl) {
+            new CallableMiddleware(function () use ($contentType, $cacheControl) {
                 return (new Response())
                     ->withHeader('Cache-Control', $cacheControl)
                     ->withHeader('Content-Type', $contentType);
-            },
-        ]))->dispatch(new Request('/', 'GET'));
+            }),
+        ]))->dispatch(new ServerRequest([], [], '/', 'GET'));
 
         $this->assertInstanceOf('Psr\\Http\\Message\\ResponseInterface', $response);
         $this->assertEquals($result, $response->getHeaderLine('Cache-Control'));
@@ -58,21 +59,21 @@ class ExpiresTest extends \PHPUnit_Framework_TestCase
     {
         $response = (new Dispatcher([
             new Expires(),
-            function () {
+            new CallableMiddleware(function () {
                 return (new Response())
                     ->withHeader('Cache-Control', 'no-store');
-            },
-        ]))->dispatch(new Request('/', 'GET'));
+            }),
+        ]))->dispatch(new ServerRequest([], [], '/', 'GET'));
 
         $this->assertInstanceOf('Psr\\Http\\Message\\ResponseInterface', $response);
         $this->assertFalse($response->hasHeader('Expires'));
 
         $response = (new Dispatcher([
             new Expires(),
-            function () {
+            new CallableMiddleware(function () {
                 return new Response();
-            },
-        ]))->dispatch(new Request('/', 'POST'));
+            }),
+        ]))->dispatch(new ServerRequest([], [], '/', 'POST'));
 
         $this->assertInstanceOf('Psr\\Http\\Message\\ResponseInterface', $response);
         $this->assertFalse($response->hasHeader('Expires'));

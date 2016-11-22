@@ -2,15 +2,15 @@
 
 namespace Middlewares;
 
-use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use Interop\Http\Middleware\MiddlewareInterface;
+use Interop\Http\Middleware\ServerMiddlewareInterface;
 use Interop\Http\Middleware\DelegateInterface;
 use Micheh\Cache\CacheUtil;
 use Micheh\Cache\Header\ResponseCacheControl;
 use DateTime;
 
-class Expires implements MiddlewareInterface
+class Expires implements ServerMiddlewareInterface
 {
     /**
      * @var string
@@ -49,12 +49,12 @@ class Expires implements MiddlewareInterface
     /**
      * Process a request and return a response.
      *
-     * @param RequestInterface  $request
-     * @param DelegateInterface $delegate
+     * @param ServerRequestInterface $request
+     * @param DelegateInterface      $delegate
      *
      * @return ResponseInterface
      */
-    public function process(RequestInterface $request, DelegateInterface $delegate)
+    public function process(ServerRequestInterface $request, DelegateInterface $delegate)
     {
         $response = $delegate->process($request);
 
