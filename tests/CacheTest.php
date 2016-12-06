@@ -4,9 +4,7 @@ namespace Middlewares\Tests;
 
 use Middlewares\Cache;
 use Middlewares\Utils\Dispatcher;
-use Middlewares\Utils\CallableMiddleware;
-use Zend\Diactoros\ServerRequest;
-use Zend\Diactoros\Response;
+use Middlewares\Utils\Factory;
 use MatthiasMullie\Scrapbook\Adapters\MemoryStore;
 use MatthiasMullie\Scrapbook\Psr6\Pool;
 
@@ -18,17 +16,14 @@ class CacheTest extends \PHPUnit_Framework_TestCase
 
         $dispatcher = new Dispatcher([
             new Cache(new Pool(new MemoryStore())),
-            new CallableMiddleware(function () use (&$used) {
+            function () use (&$used) {
                 ++$used;
 
-                $response = new Response();
-                $response->getBody()->write('Hello');
-
-                return $response;
-            }),
+                echo 'Hello';
+            },
         ]);
 
-        $request1 = new ServerRequest([], [], '/', 'GET');
+        $request1 = Factory::createServerRequest();
         $request2 = $request1->withHeader('If-Modified-Since', date('D, d M Y H:i:s'));
 
         $response1 = $dispatcher->dispatch($request1);
