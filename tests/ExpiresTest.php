@@ -39,16 +39,14 @@ class ExpiresTest extends \PHPUnit_Framework_TestCase
      */
     public function testExpires($contentType, $cacheControl, $result)
     {
-        $request = Factory::createServerRequest();
-
-        $response = (new Dispatcher([
+        $response = Dispatcher::run([
             new Expires(),
             function () use ($contentType, $cacheControl) {
                 return Factory::createResponse()
                     ->withHeader('Cache-Control', $cacheControl)
                     ->withHeader('Content-Type', $contentType);
             },
-        ]))->dispatch($request);
+        ]);
 
         $this->assertInstanceOf('Psr\\Http\\Message\\ResponseInterface', $response);
         $this->assertEquals($result, $response->getHeaderLine('Cache-Control'));
@@ -57,24 +55,22 @@ class ExpiresTest extends \PHPUnit_Framework_TestCase
 
     public function testNoExpires()
     {
-        $request = Factory::createServerRequest();
-
-        $response = (new Dispatcher([
+        $response = Dispatcher::run([
             new Expires(),
             function () {
                 return Factory::createResponse()
                     ->withHeader('Cache-Control', 'no-store');
             },
-        ]))->dispatch($request);
+        ]);
 
         $this->assertInstanceOf('Psr\\Http\\Message\\ResponseInterface', $response);
         $this->assertFalse($response->hasHeader('Expires'));
 
         $request = Factory::createServerRequest([], 'POST');
 
-        $response = (new Dispatcher([
+        $response = Dispatcher::run([
             new Expires(),
-        ]))->dispatch($request);
+        ], $request);
 
         $this->assertInstanceOf('Psr\\Http\\Message\\ResponseInterface', $response);
         $this->assertFalse($response->hasHeader('Expires'));
