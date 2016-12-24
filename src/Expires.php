@@ -4,13 +4,13 @@ namespace Middlewares;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use Interop\Http\Middleware\ServerMiddlewareInterface;
-use Interop\Http\Middleware\DelegateInterface;
+use Interop\Http\ServerMiddleware\MiddlewareInterface;
+use Interop\Http\ServerMiddleware\DelegateInterface;
 use Micheh\Cache\CacheUtil;
 use Micheh\Cache\Header\ResponseCacheControl;
 use DateTime;
 
-class Expires implements ServerMiddlewareInterface
+class Expires implements MiddlewareInterface
 {
     /**
      * @var string
