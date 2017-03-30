@@ -36,6 +36,11 @@ class Cache implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, DelegateInterface $delegate)
     {
+        //Only GET & HEAD request
+        if (!in_array($request->getMethod(), ['GET', 'HEAD'], true)) {
+            return $delegate->process($request);
+        }
+
         $util = new CacheUtil();
         $key = $request->getMethod().md5((string) $request->getUri());
         $item = $this->cache->getItem($key);
