@@ -2,10 +2,10 @@
 
 namespace Middlewares\Tests;
 
-use PHPUnit\Framework\TestCase;
 use Middlewares\Expires;
 use Middlewares\Utils\Dispatcher;
 use Middlewares\Utils\Factory;
+use PHPUnit\Framework\TestCase;
 
 class ExpiresTest extends TestCase
 {
@@ -37,6 +37,9 @@ class ExpiresTest extends TestCase
 
     /**
      * @dataProvider expiresProvider
+     * @param mixed $contentType
+     * @param mixed $cacheControl
+     * @param mixed $result
      */
     public function testExpires($contentType, $cacheControl, $result)
     {

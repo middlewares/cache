@@ -2,12 +2,12 @@
 
 namespace Middlewares;
 
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Message\ResponseInterface;
-use Interop\Http\ServerMiddleware\MiddlewareInterface;
 use Interop\Http\ServerMiddleware\DelegateInterface;
-use Psr\Cache\CacheItemPoolInterface;
+use Interop\Http\ServerMiddleware\MiddlewareInterface;
 use Micheh\Cache\CacheUtil;
+use Psr\Cache\CacheItemPoolInterface;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 class Cache implements MiddlewareInterface
 {

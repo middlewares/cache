@@ -2,12 +2,12 @@
 
 namespace Middlewares\Tests;
 
-use PHPUnit\Framework\TestCase;
+use MatthiasMullie\Scrapbook\Adapters\MemoryStore;
+use MatthiasMullie\Scrapbook\Psr6\Pool;
 use Middlewares\Cache;
 use Middlewares\Utils\Dispatcher;
 use Middlewares\Utils\Factory;
-use MatthiasMullie\Scrapbook\Adapters\MemoryStore;
-use MatthiasMullie\Scrapbook\Psr6\Pool;
+use PHPUnit\Framework\TestCase;
 
 class CacheTest extends TestCase
 {

@@ -2,13 +2,13 @@
 
 namespace Middlewares;
 
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Message\ResponseInterface;
-use Interop\Http\ServerMiddleware\MiddlewareInterface;
+use DateTime;
 use Interop\Http\ServerMiddleware\DelegateInterface;
+use Interop\Http\ServerMiddleware\MiddlewareInterface;
 use Micheh\Cache\CacheUtil;
 use Micheh\Cache\Header\ResponseCacheControl;
-use DateTime;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 class Expires implements MiddlewareInterface
 {
