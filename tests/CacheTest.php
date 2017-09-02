@@ -2,13 +2,14 @@
 
 namespace Middlewares\Tests;
 
+use PHPUnit\Framework\TestCase;
 use Middlewares\Cache;
 use Middlewares\Utils\Dispatcher;
 use Middlewares\Utils\Factory;
 use MatthiasMullie\Scrapbook\Adapters\MemoryStore;
 use MatthiasMullie\Scrapbook\Psr6\Pool;
 
-class CacheTest extends \PHPUnit_Framework_TestCase
+class CacheTest extends TestCase
 {
     public function testCache()
     {

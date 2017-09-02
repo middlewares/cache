@@ -2,10 +2,11 @@
 
 namespace Middlewares\Tests;
 
+use PHPUnit\Framework\TestCase;
 use Middlewares\CachePrevention;
 use Middlewares\Utils\Dispatcher;
 
-class CachePreventionTest extends \PHPUnit_Framework_TestCase
+class CachePreventionTest extends TestCase
 {
     public function testCachePrevention()
     {
