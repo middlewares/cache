@@ -2,8 +2,8 @@
 
 namespace Middlewares;
 
-use Interop\Http\ServerMiddleware\DelegateInterface;
-use Interop\Http\ServerMiddleware\MiddlewareInterface;
+use Interop\Http\Server\MiddlewareInterface;
+use Interop\Http\Server\RequestHandlerInterface;
 use Micheh\Cache\CacheUtil;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -29,16 +29,16 @@ class Cache implements MiddlewareInterface
     /**
      * Process a request and return a response.
      *
-     * @param ServerRequestInterface $request
-     * @param DelegateInterface      $delegate
+     * @param ServerRequestInterface  $request
+     * @param RequestHandlerInterface $handler
      *
      * @return ResponseInterface
      */
-    public function process(ServerRequestInterface $request, DelegateInterface $delegate)
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler)
     {
         //Only GET & HEAD request
         if (!in_array($request->getMethod(), ['GET', 'HEAD'], true)) {
-            return $delegate->process($request);
+            return $handler->handle($request);
         }
 
         $util = new CacheUtil();
@@ -61,7 +61,7 @@ class Cache implements MiddlewareInterface
             $this->cache->deleteItem($key);
         }
 
-        $response = $delegate->process($request);
+        $response = $handler->handle($request);
 
         if (!$response->hasHeader('Last-Modified')) {
             $response = $util->withLastModified($response, time());
