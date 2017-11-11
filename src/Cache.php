@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 
 namespace Middlewares;
 
@@ -18,8 +19,6 @@ class Cache implements MiddlewareInterface
 
     /**
      * Set the PSR-6 cache pool.
-     *
-     * @param CacheItemPoolInterface $cache
      */
     public function __construct(CacheItemPoolInterface $cache)
     {
@@ -28,13 +27,8 @@ class Cache implements MiddlewareInterface
 
     /**
      * Process a request and return a response.
-     *
-     * @param ServerRequestInterface  $request
-     * @param RequestHandlerInterface $handler
-     *
-     * @return ResponseInterface
      */
-    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler)
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         //Only GET & HEAD request
         if (!in_array($request->getMethod(), ['GET', 'HEAD'], true)) {

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 
 namespace Middlewares;
 
@@ -34,12 +35,8 @@ class Expires implements MiddlewareInterface
 
     /**
      * Set the default expires value.
-     *
-     * @param string $expires
-     *
-     * @return self
      */
-    public function defaultExpires($expires)
+    public function defaultExpires(string $expires): self
     {
         $this->default = $expires;
 
@@ -48,13 +45,8 @@ class Expires implements MiddlewareInterface
 
     /**
      * Process a request and return a response.
-     *
-     * @param ServerRequestInterface  $request
-     * @param RequestHandlerInterface $handler
-     *
-     * @return ResponseInterface
      */
-    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler)
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $response = $handler->handle($request);
 
@@ -94,15 +86,12 @@ class Expires implements MiddlewareInterface
 
     /**
      * Add the Expires and Cache-Control headers.
-     *
-     * @param ResponseInterface $response
-     * @param CacheUtil         $util
-     * @param string            $expires
-     *
-     * @return ResponseInterface $response
      */
-    private static function withExpires(ResponseInterface $response, CacheUtil $util, $expires)
-    {
+    private static function withExpires(
+        ResponseInterface $response,
+        CacheUtil $util,
+        string $expires
+    ): ResponseInterface {
         $expires = new DateTime($expires);
         $cacheControl = ResponseCacheControl::fromString($response->getHeaderLine('Cache-Control'))
             ->withMaxAge($expires->getTimestamp() - time());
