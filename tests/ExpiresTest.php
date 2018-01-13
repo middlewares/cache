@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 
 namespace Middlewares\Tests;
 
@@ -37,11 +38,8 @@ class ExpiresTest extends TestCase
 
     /**
      * @dataProvider expiresProvider
-     * @param mixed $contentType
-     * @param mixed $cacheControl
-     * @param mixed $result
      */
-    public function testExpires($contentType, $cacheControl, $result)
+    public function testExpires(string $contentType, string $cacheControl, string $result)
     {
         $response = Dispatcher::run([
             new Expires(),
@@ -52,7 +50,6 @@ class ExpiresTest extends TestCase
             },
         ]);
 
-        $this->assertInstanceOf('Psr\\Http\\Message\\ResponseInterface', $response);
         $this->assertEquals($result, $response->getHeaderLine('Cache-Control'));
         $this->assertTrue($response->hasHeader('Expires'));
     }
@@ -67,7 +64,6 @@ class ExpiresTest extends TestCase
             },
         ]);
 
-        $this->assertInstanceOf('Psr\\Http\\Message\\ResponseInterface', $response);
         $this->assertFalse($response->hasHeader('Expires'));
 
         $request = Factory::createServerRequest([], 'POST');
@@ -76,7 +72,22 @@ class ExpiresTest extends TestCase
             new Expires(),
         ], $request);
 
-        $this->assertInstanceOf('Psr\\Http\\Message\\ResponseInterface', $response);
         $this->assertFalse($response->hasHeader('Expires'));
+    }
+
+    public function testDefaultExpires()
+    {
+        $response = Dispatcher::run(
+            [
+                (new Expires())->defaultExpires('+1 year'),
+            ],
+            Factory::createServerRequest()->withHeader('Content-Type', 'foo/bar')
+        );
+
+        $this->assertTrue($response->hasHeader('Expires'));
+        $this->assertEquals(
+            'max-age='.(strtotime('+1 year') - time()),
+            $response->getHeaderLine('Cache-Control')
+        );
     }
 }

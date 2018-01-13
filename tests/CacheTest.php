@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 
 namespace Middlewares\Tests;
 
@@ -11,35 +12,82 @@ use PHPUnit\Framework\TestCase;
 
 class CacheTest extends TestCase
 {
-    public function testCache()
+    public function testInitialState()
     {
-        $used = 0;
+        $cache = new Cache(new Pool(new MemoryStore()));
 
-        $dispatcher = new Dispatcher([
-            new Cache(new Pool(new MemoryStore())),
-            function () use (&$used) {
-                ++$used;
-
+        $response = Dispatcher::run([
+            $cache,
+            function () {
                 echo 'Hello';
             },
         ]);
 
-        $request1 = Factory::createServerRequest();
-        $request2 = $request1->withHeader('If-Modified-Since', date('D, d M Y H:i:s'));
-        $request3 = $request2->withMethod('POST');
+        $this->assertEquals('Hello', (string) $response->getBody());
+        $this->assertEquals(200, $response->getStatusCode());
 
-        $response1 = $dispatcher->dispatch($request1);
-        $response2 = $dispatcher->dispatch($request2);
-        $response3 = $dispatcher->dispatch($request3);
+        return $cache;
+    }
 
-        $this->assertEquals('Hello', (string) $response1->getBody());
-        $this->assertEquals('', (string) $response2->getBody());
-        $this->assertEquals('Hello', (string) $response3->getBody());
+    /**
+     * @depends testInitialState
+     */
+    public function testModifiedSince(Cache $cache)
+    {
+        $response = Dispatcher::run(
+            [
+                $cache,
+                function () {
+                    echo 'Hello';
+                },
+            ],
+            Factory::createServerRequest()->withHeader('If-Modified-Since', date('D, d M Y H:i:s'))
+        );
 
-        $this->assertEquals(200, $response1->getStatusCode());
-        $this->assertEquals(304, $response2->getStatusCode());
-        $this->assertEquals(200, $response3->getStatusCode());
+        $this->assertEquals('', (string) $response->getBody());
+        $this->assertEquals(304, $response->getStatusCode());
 
-        $this->assertSame(2, $used);
+        return $cache;
+    }
+
+    /**
+     * @depends testModifiedSince
+     */
+    public function testModifiedSincePost(Cache $cache)
+    {
+        $response = Dispatcher::run(
+            [
+                $cache,
+                function () {
+                    echo 'Hello';
+                },
+            ],
+            Factory::createServerRequest()
+                ->withMethod('POST')
+                ->withHeader('If-Modified-Since', date('D, d M Y H:i:s'))
+        );
+
+        $this->assertEquals('Hello', (string) $response->getBody());
+        $this->assertEquals(200, $response->getStatusCode());
+    }
+
+    /**
+     * @depends testModifiedSince
+     */
+    public function testModified(Cache $cache)
+    {
+        $response = Dispatcher::run(
+            [
+                $cache,
+                function () {
+                    echo 'Hello';
+                },
+            ],
+            Factory::createServerRequest()
+                ->withHeader('If-Modified-Since', date('D, d M Y H:i:s', time() - 100))
+        );
+
+        $this->assertEquals('Hello', (string) $response->getBody());
+        $this->assertEquals(200, $response->getStatusCode());
     }
 }
