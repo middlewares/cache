@@ -4,8 +4,8 @@ declare(strict_types = 1);
 namespace Middlewares;
 
 use DateTime;
-use Interop\Http\Server\MiddlewareInterface;
-use Interop\Http\Server\RequestHandlerInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 use Micheh\Cache\CacheUtil;
 use Micheh\Cache\Header\ResponseCacheControl;
 use Psr\Http\Message\ResponseInterface;
