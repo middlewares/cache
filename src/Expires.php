@@ -4,12 +4,12 @@ declare(strict_types = 1);
 namespace Middlewares;
 
 use DateTime;
-use Psr\Http\Server\MiddlewareInterface;
-use Psr\Http\Server\RequestHandlerInterface;
 use Micheh\Cache\CacheUtil;
 use Micheh\Cache\Header\ResponseCacheControl;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
 class Expires implements MiddlewareInterface
 {
