@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
 
 class CacheTest extends TestCase
 {
-    public function testInitialState()
+    public function testInitialState(): Cache
     {
         $cache = new Cache(new Pool(new MemoryStore()));
 
@@ -32,7 +32,7 @@ class CacheTest extends TestCase
     /**
      * @depends testInitialState
      */
-    public function testModifiedSince(Cache $cache)
+    public function testModifiedSince(Cache $cache): Cache
     {
         $response = Dispatcher::run(
             [
