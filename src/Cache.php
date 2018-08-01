@@ -18,11 +18,25 @@ class Cache implements MiddlewareInterface
     private $cache;
 
     /**
+     * @var ResponseFactoryInterface
+     */
+    private $responseFactory;
+
+    /**
      * Set the PSR-6 cache pool.
      */
     public function __construct(CacheItemPoolInterface $cache)
     {
         $this->cache = $cache;
+    }
+
+    /**
+     * Set the response factory to return the error responses.
+     */
+    public function responseFactory(ResponseFactoryInterface $responseFactory): self
+    {
+        $this->responseFactory = $responseFactory;
+        return $this;
     }
 
     /**
@@ -42,7 +56,8 @@ class Cache implements MiddlewareInterface
         //It's cached
         if ($item->isHit()) {
             $headers = $item->get();
-            $response = Utils\Factory::createResponse(304);
+            $responseFactory = $this->responseFactory ?: Utils\Factory::getResponseFactory();
+            $response = $responseFactory->createResponse(304);
 
             foreach ($headers as $name => $header) {
                 $response = $response->withHeader($name, $header);

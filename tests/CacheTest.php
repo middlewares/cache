@@ -41,7 +41,7 @@ class CacheTest extends TestCase
                     echo 'Hello';
                 },
             ],
-            Factory::createServerRequest()->withHeader('If-Modified-Since', date('D, d M Y H:i:s'))
+            Factory::createServerRequest('GET', '/')->withHeader('If-Modified-Since', date('D, d M Y H:i:s'))
         );
 
         $this->assertEquals('', (string) $response->getBody());
@@ -62,8 +62,7 @@ class CacheTest extends TestCase
                     echo 'Hello';
                 },
             ],
-            Factory::createServerRequest()
-                ->withMethod('POST')
+            Factory::createServerRequest('POST', '/')
                 ->withHeader('If-Modified-Since', date('D, d M Y H:i:s'))
         );
 
@@ -83,7 +82,7 @@ class CacheTest extends TestCase
                     echo 'Hello';
                 },
             ],
-            Factory::createServerRequest()
+            Factory::createServerRequest('GET', '/')
                 ->withHeader('If-Modified-Since', date('D, d M Y H:i:s', time() - 100))
         );
 

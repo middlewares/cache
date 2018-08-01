@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.1.0] - UNRELEASED
+
+### Added
+
+- New option `responseFactory` to configure a custom factory implementing `Psr\Http\Message\ResponseFactoryInterface`
+
+### Changed
+
+- Upgraded to the final version of PSR-17 `psr/http-factory`
+
 ## [1.0.0] - 2018-01-25
 
 ### Added
@@ -63,6 +73,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 First version
 
+
+[1.1.0]: https://github.com/middlewares/cache/compare/v1.0.0...HEAD
 [1.0.0]: https://github.com/middlewares/cache/compare/v0.5.0...v1.0.0
 [0.5.0]: https://github.com/middlewares/cache/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/middlewares/cache/compare/v0.3.1...v0.4.0

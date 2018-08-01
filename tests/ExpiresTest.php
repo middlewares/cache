@@ -66,7 +66,7 @@ class ExpiresTest extends TestCase
 
         $this->assertFalse($response->hasHeader('Expires'));
 
-        $request = Factory::createServerRequest([], 'POST');
+        $request = Factory::createServerRequest('POST', '/');
 
         $response = Dispatcher::run([
             new Expires(),
@@ -81,7 +81,7 @@ class ExpiresTest extends TestCase
             [
                 (new Expires())->defaultExpires('+1 year'),
             ],
-            Factory::createServerRequest()->withHeader('Content-Type', 'foo/bar')
+            Factory::createServerRequest('GET', '/')->withHeader('Content-Type', 'foo/bar')
         );
 
         $this->assertTrue($response->hasHeader('Expires'));

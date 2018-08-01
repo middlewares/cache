@@ -79,6 +79,10 @@ $dispatcher = new Dispatcher([
 $response = $dispatcher->dispatch(new ServerRequest());
 ```
 
+#### `responseFactory(Psr\Http\Message\ResponseFactoryInterface $responseFactory)`
+
+A PSR-17 factory to create the `304` responses.
+
 ---
 
 Please see [CHANGELOG](CHANGELOG.md) for more information about recent changes and [CONTRIBUTING](CONTRIBUTING.md) for contributing details.
