@@ -15,7 +15,7 @@
     },
     "require": {
         "php": "^7.0",
-        "middlewares/utils": "^2.0",
+        "middlewares/utils": "^2.1",
         "micheh/psr7-cache": "^0.5.0",
         "psr/cache": "^1.0",
         "psr/http-server-middleware": "^1.0"

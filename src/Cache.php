@@ -3,6 +3,7 @@ declare(strict_types = 1);
 
 namespace Middlewares;
 
+use Middlewares\Utils\Traits\HasResponseFactory;
 use Micheh\Cache\CacheUtil;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
@@ -13,15 +14,12 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 class Cache implements MiddlewareInterface
 {
+    use HasResponseFactory;
+
     /**
      * @var CacheItemPoolInterface
      */
     private $cache;
-
-    /**
-     * @var ResponseFactoryInterface
-     */
-    private $responseFactory;
 
     /**
      * Set the PSR-6 cache pool.
@@ -29,15 +27,6 @@ class Cache implements MiddlewareInterface
     public function __construct(CacheItemPoolInterface $cache)
     {
         $this->cache = $cache;
-    }
-
-    /**
-     * Set the response factory to return the error responses.
-     */
-    public function responseFactory(ResponseFactoryInterface $responseFactory): self
-    {
-        $this->responseFactory = $responseFactory;
-        return $this;
     }
 
     /**
@@ -57,8 +46,7 @@ class Cache implements MiddlewareInterface
         //It's cached
         if ($item->isHit()) {
             $headers = $item->get();
-            $responseFactory = $this->responseFactory ?: Utils\Factory::getResponseFactory();
-            $response = $responseFactory->createResponse(304);
+            $response = $this->createResponse(304);
 
             foreach ($headers as $name => $header) {
                 $response = $response->withHeader($name, $header);
