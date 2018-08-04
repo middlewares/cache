@@ -3,10 +3,9 @@ declare(strict_types = 1);
 
 namespace Middlewares;
 
-use Middlewares\Utils\Traits\HasResponseFactory;
 use Micheh\Cache\CacheUtil;
+use Middlewares\Utils\Traits\HasResponseFactory;
 use Psr\Cache\CacheItemPoolInterface;
-use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
