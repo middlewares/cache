@@ -5,6 +5,8 @@ namespace Middlewares;
 
 use Micheh\Cache\CacheUtil;
 use Middlewares\Utils\Traits\HasResponseFactory;
+use Middlewares\Utils\Factory;
+use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -23,9 +25,10 @@ class Cache implements MiddlewareInterface
     /**
      * Set the PSR-6 cache pool.
      */
-    public function __construct(CacheItemPoolInterface $cache)
+    public function __construct(CacheItemPoolInterface $cache, ResponseFactoryInterface $responseFactory = null)
     {
         $this->cache = $cache;
+        $this->responseFactory = $responseFactory ?: Factory::getResponseFactory();
     }
 
     /**
