@@ -5,7 +5,6 @@
 [![Build Status][ico-travis]][link-travis]
 [![Quality Score][ico-scrutinizer]][link-scrutinizer]
 [![Total Downloads][ico-downloads]][link-downloads]
-[![SensioLabs Insight][ico-sensiolabs]][link-sensiolabs]
 
 Middleware components with the following cache utilities:
 
@@ -15,8 +14,8 @@ Middleware components with the following cache utilities:
 
 ## Requirements
 
-* PHP >= 7.0
-* A [PSR-7](https://packagist.org/providers/psr/http-message-implementation) http message implementation ([Diactoros](https://github.com/zendframework/zend-diactoros), [Guzzle](https://github.com/guzzle/psr7), [Slim](https://github.com/slimphp/Slim), etc...)
+* PHP >= 7.2
+* A [PSR-7 http library](https://github.com/middlewares/awesome-psr15-middlewares#psr-7-implementations)
 * A [PSR-15 middleware dispatcher](https://github.com/middlewares/awesome-psr15-middlewares#dispatcher)
 
 ## Installation
@@ -32,56 +31,64 @@ composer require middlewares/cache
 To add the response headers for cache prevention. Useful in development environments:
 
 ```php
-$dispatcher = new Dispatcher([
+Dispatcher::run([
     new Middlewares\CachePrevention()
 ]);
-
-$response = $dispatcher->dispatch(new ServerRequest());
 ```
 
 ## Expires
 
-To add the `Expires` and `Cache-Control: max-age` headers to the response.
-
-#### `__construct(array $expires = null)`
-
-Set the available expires for each mimetype. If it's not defined, [use the defaults](src/expires_defaults.php).
-
-#### `defaultExpires(string $expires)`
-
-Set the default expires value if the request mimetype does not match. By default is 1 month. Example:
+This middleware adds the `Expires` and `Cache-Control: max-age` headers to the response. You can configure the cache duration for each mimetype. If it's not defined, [use the defaults](src/expires_defaults.php).
 
 ```php
-$dispatcher = new Dispatcher([
-    (new Middlewares\Expires([ //set 1 year lifetime to css and js
-        'text/css' => '+1 year',
-        'text/javascript' => '+1 year',
-    ]))->defaultExpires('+1 hour') //and 1 hour to everything else
-]);
+// Use the default configuration
+$expires = new Middlewares\Expires();
 
-$response = $dispatcher->dispatch(new ServerRequest());
+// Custom durations
+$expires = new Middlewares\Expires([
+    'text/css' => '+1 year',
+    'text/js' => '+1 week',
+]);
+```
+
+### defaultExpires
+
+Set the default expires value if the request mimetype is not configured. By default is 1 month. Example:
+
+```php
+//set 1 year lifetime to css and js
+$durations = [
+    'text/css' => '+1 year',
+    'text/javascript' => '+1 year',
+];
+
+//and 1 hour to everything else
+$default = '+1 hour';
+
+$expires = (new Middlewares\Expires($durations))->defaultExpires($default);
 ```
 
 ## Cache
 
 Saves the response headers in a [PSR-6 cache pool](http://www.php-fig.org/psr/psr-6/) and returns `304` responses (Not modified) if the response is still valid. This saves server resources and bandwidth because the body is returned empty. It's recomended to combine it with `Expires` to set the lifetime of the responses.
 
-#### `__construct(Psr\Cache\CacheItemPoolInterface $cache)`
-
-The cache pool instance used to save the responses headers.
-
 ```php
-$dispatcher = new Dispatcher([
-    new Middlewares\Cache($cache),
+$cachePool = new Psr6CachePool();
+
+Dispatcher::run([
+    new Middlewares\Cache($cachePool),
     new Middlewares\Expires()
 ]);
-
-$response = $dispatcher->dispatch(new ServerRequest());
 ```
 
-#### `responseFactory(Psr\Http\Message\ResponseFactoryInterface $responseFactory)`
+Optionally, you can provide a `Psr\Http\Message\ResponseFactoryInterface` as the second argument to create the `304` empty responses. If it's not defined, [Middleware\Utils\Factory](https://github.com/middlewares/utils#factory) will be used to detect it automatically.
 
-A PSR-17 factory to create the `304` responses.
+```php
+$cachePool = new Psr6CachePool();
+$responseFactory = new MyOwnResponseFactory();
+
+$cache = new Middlewares\Cache($cachePool, $responseFactory);
+```
 
 ---
 
@@ -94,10 +101,8 @@ The MIT License (MIT). Please see [LICENSE](LICENSE) for more information.
 [ico-travis]: https://img.shields.io/travis/middlewares/cache/master.svg?style=flat-square
 [ico-scrutinizer]: https://img.shields.io/scrutinizer/g/middlewares/cache.svg?style=flat-square
 [ico-downloads]: https://img.shields.io/packagist/dt/middlewares/cache.svg?style=flat-square
-[ico-sensiolabs]: https://img.shields.io/sensiolabs/i/e88f1269-386c-480a-b63f-89872c6ae479.svg?style=flat-square
 
 [link-packagist]: https://packagist.org/packages/middlewares/cache
 [link-travis]: https://travis-ci.org/middlewares/cache
 [link-scrutinizer]: https://scrutinizer-ci.com/g/middlewares/cache
 [link-downloads]: https://packagist.org/packages/middlewares/cache
-[link-sensiolabs]: https://insight.sensiolabs.com/projects/e88f1269-386c-480a-b63f-89872c6ae479
