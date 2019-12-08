@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.1.0] - Unreleased
+### Added
+- New middleware `ClearSiteData`.
+
 ## [2.0.0] - 2019-12-01
 ### Added
 - Added a second argument to `Cache` constructor to define a `ResponseFactoryInterface`
@@ -60,6 +64,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## 0.1.0 - 2016-10-03
 First version
 
+[2.1.0]: https://github.com/middlewares/cache/compare/v2.0.0...HEAD
 [2.0.0]: https://github.com/middlewares/cache/compare/v1.1.0...v2.0.0
 [1.1.0]: https://github.com/middlewares/cache/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/middlewares/cache/compare/v0.5.0...v1.0.0
