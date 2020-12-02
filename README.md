@@ -89,6 +89,22 @@ $responseFactory = new MyOwnResponseFactory();
 $cache = new Middlewares\Cache($cachePool, $responseFactory);
 ```
 
+## ClearSiteData
+
+Send the header `Clear-Site-Data` to remove all site data in the client (cache, cookies, storage etc)
+
+```php
+Dispatcher::run([
+    new Middlewares\ClearSiteData()
+]);
+```
+
+Optionally, you can provide the list of data types that you want to clear.
+
+```php
+$cache = new Middlewares\ClearSiteData('cache', 'cookies');
+```
+
 ---
 
 Please see [CHANGELOG](CHANGELOG.md) for more information about recent changes and [CONTRIBUTING](CONTRIBUTING.md) for contributing details.
