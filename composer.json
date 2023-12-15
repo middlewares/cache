@@ -1,5 +1,5 @@
 {
-    "name": "mikespub/middlewares-cache",
+    "name": "middlewares/cache",
     "type": "library",
     "description": "Middleware with various cache utilities",
     "license": "MIT",
