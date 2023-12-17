@@ -1,17 +1,19 @@
 # Change Log
-
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [2.2.0] - 2023-12-14
+## [3.0.0] - 2023-12-17
 ### Added
 - New test cases for Cache using ETag
 
 ### Changed
 - Replaced read-only `micheh/psr7-cache` with updated `mikespub/micheh-psr7-cache`
 - Updated version constraints for dependencies
+
+### Removed
+- Support for PHP prior to 8.1.
 
 ## [2.1.0] - 2020-12-02
 ### Added
@@ -70,9 +72,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - Updated to `http-interop/http-middleware#0.3`
 
-## 0.1.0 - 2016-10-03
+## [0.1.0] - 2016-10-03
 First version
 
+[3.0.0]: https://github.com/middlewares/cache/compare/v2.1.0...v3.0.0
 [2.1.0]: https://github.com/middlewares/cache/compare/v2.0.0...v2.1.0
 [2.0.0]: https://github.com/middlewares/cache/compare/v1.1.0...v2.0.0
 [1.1.0]: https://github.com/middlewares/cache/compare/v1.0.0...v1.1.0
@@ -82,3 +85,4 @@ First version
 [0.3.1]: https://github.com/middlewares/cache/compare/v0.3.0...v0.3.1
 [0.3.0]: https://github.com/middlewares/cache/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/middlewares/cache/compare/v0.1.0...v0.2.0
+[0.1.0]: https://github.com/middlewares/cache/releases/tag/v0.1.0
