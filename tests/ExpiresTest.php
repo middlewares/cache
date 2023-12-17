@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 class ExpiresTest extends TestCase
 {
-    public function expiresProvider(): array
+    public static function expiresProvider(): array
     {
         return [
             [

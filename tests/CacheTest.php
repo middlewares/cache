@@ -89,4 +89,87 @@ class CacheTest extends TestCase
         $this->assertEquals('Hello', (string) $response->getBody());
         $this->assertEquals(200, $response->getStatusCode());
     }
+
+    public static function getETagMiddlewareStack($cache)
+    {
+        return [
+            $cache,
+            function ($request, $next) {
+                $response = $next->handle($request);
+
+                return $response->withHeader('ETag', '"my-opaque-etag"');
+            },
+            function () {
+                echo 'Hello';
+            },
+        ];
+    }
+
+    public function testInitialETagState(): Cache
+    {
+        $cache = new Cache(new Pool(new MemoryStore()));
+        $stack = $this->getETagMiddlewareStack($cache);
+
+        $response = Dispatcher::run($stack);
+
+        $this->assertEquals('Hello', (string) $response->getBody());
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals('"my-opaque-etag"', $response->getHeaderLine('ETag'));
+
+        return $cache;
+    }
+
+    /**
+     * @depends testInitialETagState
+     */
+    public function testStrongETag(Cache $cache)
+    {
+        $stack = $this->getETagMiddlewareStack($cache);
+
+        $response = Dispatcher::run(
+            $stack,
+            Factory::createServerRequest('GET', '/')
+                ->withHeader('If-None-Match', '"my-opaque-etag"')
+        );
+
+        $this->assertEquals(304, $response->getStatusCode());
+        $this->assertEquals('', (string) $response->getBody());
+        $this->assertEquals('"my-opaque-etag"', $response->getHeaderLine('ETag'));
+    }
+
+    /**
+     * @depends testInitialETagState
+     */
+    public function testWeakETag(Cache $cache)
+    {
+        $stack = $this->getETagMiddlewareStack($cache);
+
+        $response = Dispatcher::run(
+            $stack,
+            Factory::createServerRequest('GET', '/')
+                ->withHeader('If-None-Match', 'W/"my-opaque-etag"')
+        );
+
+        $this->assertEquals(304, $response->getStatusCode());
+        $this->assertEquals('', (string) $response->getBody());
+        $this->assertEquals('"my-opaque-etag"', $response->getHeaderLine('ETag'));
+    }
+
+    /**
+     * @depends testInitialETagState
+     */
+    public function testWrongETag(Cache $cache)
+    {
+        $stack = $this->getETagMiddlewareStack($cache);
+
+        $response = Dispatcher::run(
+            $stack,
+            Factory::createServerRequest('GET', '/')
+                ->withHeader('If-None-Match', '"other-opaque-etag"')
+        );
+
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals('Hello', (string) $response->getBody());
+        $this->assertEquals('"my-opaque-etag"', $response->getHeaderLine('ETag'));
+    }
 }
