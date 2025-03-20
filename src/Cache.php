@@ -27,7 +27,7 @@ class Cache implements MiddlewareInterface
     /**
      * Set the PSR-6 cache pool.
      */
-    public function __construct(CacheItemPoolInterface $cache, ResponseFactoryInterface $responseFactory = null)
+    public function __construct(CacheItemPoolInterface $cache, ?ResponseFactoryInterface $responseFactory = null)
     {
         $this->cache = $cache;
         $this->responseFactory = $responseFactory ?: Factory::getResponseFactory();

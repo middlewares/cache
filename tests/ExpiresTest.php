@@ -10,6 +10,9 @@ use PHPUnit\Framework\TestCase;
 
 class ExpiresTest extends TestCase
 {
+    /**
+     * @return array<string[]>
+     */
     public static function expiresProvider(): array
     {
         return [
@@ -39,7 +42,7 @@ class ExpiresTest extends TestCase
     /**
      * @dataProvider expiresProvider
      */
-    public function testExpires(string $contentType, string $cacheControl, string $result)
+    public function testExpires(string $contentType, string $cacheControl, string $result): void
     {
         $response = Dispatcher::run([
             new Expires(),
@@ -54,7 +57,7 @@ class ExpiresTest extends TestCase
         $this->assertTrue($response->hasHeader('Expires'));
     }
 
-    public function testNoExpires()
+    public function testNoExpires(): void
     {
         $response = Dispatcher::run([
             new Expires(),
@@ -75,7 +78,7 @@ class ExpiresTest extends TestCase
         $this->assertFalse($response->hasHeader('Expires'));
     }
 
-    public function testDefaultExpires()
+    public function testDefaultExpires(): void
     {
         $response = Dispatcher::run(
             [
