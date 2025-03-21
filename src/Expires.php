@@ -19,16 +19,16 @@ class Expires implements MiddlewareInterface
     private $default = '+1 month';
 
     /**
-     * @var array
+     * @var array<string,string>
      */
     private $expires;
 
     /**
      * Define de available expires.
      *
-     * @param array|null $expires
+     * @param array<string,string>|null $expires
      */
-    public function __construct(array $expires = null)
+    public function __construct(?array $expires = null)
     {
         $this->expires = $expires ?: require __DIR__.'/expires_defaults.php';
     }
@@ -98,6 +98,7 @@ class Expires implements MiddlewareInterface
 
         $response = $util->withExpires($response, $expires);
 
+        // @phpstan-ignore-next-line
         return $util->withCacheControl($response, $cacheControl);
     }
 }
