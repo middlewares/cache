@@ -19,7 +19,7 @@ class Expires implements MiddlewareInterface
     private $default = '+1 month';
 
     /**
-     * @var array<string,string>|null
+     * @var array<string,string>
      */
     private $expires;
 
@@ -98,6 +98,7 @@ class Expires implements MiddlewareInterface
 
         $response = $util->withExpires($response, $expires);
 
+        // @phpstan-ignore-next-line
         return $util->withCacheControl($response, $cacheControl);
     }
 }
