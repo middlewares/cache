@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class CachePreventionTest extends TestCase
 {
-    public function testCachePrevention()
+    public function testCachePrevention(): void
     {
         $response = Dispatcher::run([
             new CachePrevention(),

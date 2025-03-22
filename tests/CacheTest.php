@@ -53,7 +53,7 @@ class CacheTest extends TestCase
     /**
      * @depends testModifiedSince
      */
-    public function testModifiedSincePost(Cache $cache)
+    public function testModifiedSincePost(Cache $cache): void
     {
         $response = Dispatcher::run(
             [
@@ -73,7 +73,7 @@ class CacheTest extends TestCase
     /**
      * @depends testModifiedSince
      */
-    public function testModified(Cache $cache)
+    public function testModified(Cache $cache): void
     {
         $response = Dispatcher::run(
             [
@@ -90,7 +90,11 @@ class CacheTest extends TestCase
         $this->assertEquals(200, $response->getStatusCode());
     }
 
-    public static function getETagMiddlewareStack($cache)
+    /**
+     * @param  Cache                 $cache
+     * @return array<Cache|callable>
+     */
+    public static function getETagMiddlewareStack($cache): array
     {
         return [
             $cache,
@@ -122,7 +126,7 @@ class CacheTest extends TestCase
     /**
      * @depends testInitialETagState
      */
-    public function testStrongETag(Cache $cache)
+    public function testStrongETag(Cache $cache): void
     {
         $stack = $this->getETagMiddlewareStack($cache);
 
@@ -140,7 +144,7 @@ class CacheTest extends TestCase
     /**
      * @depends testInitialETagState
      */
-    public function testWeakETag(Cache $cache)
+    public function testWeakETag(Cache $cache): void
     {
         $stack = $this->getETagMiddlewareStack($cache);
 
@@ -158,7 +162,7 @@ class CacheTest extends TestCase
     /**
      * @depends testInitialETagState
      */
-    public function testWrongETag(Cache $cache)
+    public function testWrongETag(Cache $cache): void
     {
         $stack = $this->getETagMiddlewareStack($cache);
 

@@ -12,7 +12,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 class ClearSiteData implements MiddlewareInterface
 {
     /**
-     * @var array
+     * @var string[]
      */
     private $types = ['*'];
 

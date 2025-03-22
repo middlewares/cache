@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 class ClearSiteDataTest extends TestCase
 {
-    public function testDefaultValue()
+    public function testDefaultValue(): void
     {
         $response = Dispatcher::run([
             new ClearSiteData(),
@@ -19,7 +19,7 @@ class ClearSiteDataTest extends TestCase
         $this->assertEquals('"*"', $response->getHeaderLine('Clear-Site-Data'));
     }
 
-    public function testCustomValue()
+    public function testCustomValue(): void
     {
         $response = Dispatcher::run([
             new ClearSiteData('cache', 'storage'),
@@ -28,7 +28,7 @@ class ClearSiteDataTest extends TestCase
         $this->assertEquals('"cache" "storage"', $response->getHeaderLine('Clear-Site-Data'));
     }
 
-    public function testException()
+    public function testException(): void
     {
         $this->expectException(InvalidArgumentException::class);
 
