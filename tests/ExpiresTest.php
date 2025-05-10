@@ -6,6 +6,7 @@ namespace Middlewares\Tests;
 use Middlewares\Expires;
 use Middlewares\Utils\Dispatcher;
 use Middlewares\Utils\Factory;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class ExpiresTest extends TestCase
@@ -39,9 +40,7 @@ class ExpiresTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider expiresProvider
-     */
+    #[DataProvider('expiresProvider')]
     public function testExpires(string $contentType, string $cacheControl, string $result): void
     {
         $response = Dispatcher::run([

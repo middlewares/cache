@@ -8,6 +8,7 @@ use MatthiasMullie\Scrapbook\Psr6\Pool;
 use Middlewares\Cache;
 use Middlewares\Utils\Dispatcher;
 use Middlewares\Utils\Factory;
+use PHPUnit\Framework\Attributes\Depends;
 use PHPUnit\Framework\TestCase;
 
 class CacheTest extends TestCase
@@ -29,9 +30,7 @@ class CacheTest extends TestCase
         return $cache;
     }
 
-    /**
-     * @depends testInitialState
-     */
+    #[Depends('testInitialState')]
     public function testModifiedSince(Cache $cache): Cache
     {
         $response = Dispatcher::run(
@@ -50,9 +49,7 @@ class CacheTest extends TestCase
         return $cache;
     }
 
-    /**
-     * @depends testModifiedSince
-     */
+    #[Depends('testModifiedSince')]
     public function testModifiedSincePost(Cache $cache): void
     {
         $response = Dispatcher::run(
@@ -70,9 +67,7 @@ class CacheTest extends TestCase
         $this->assertEquals(200, $response->getStatusCode());
     }
 
-    /**
-     * @depends testModifiedSince
-     */
+    #[Depends('testModifiedSince')]
     public function testModified(Cache $cache): void
     {
         $response = Dispatcher::run(
@@ -123,9 +118,7 @@ class CacheTest extends TestCase
         return $cache;
     }
 
-    /**
-     * @depends testInitialETagState
-     */
+    #[Depends('testInitialETagState')]
     public function testStrongETag(Cache $cache): void
     {
         $stack = $this->getETagMiddlewareStack($cache);
@@ -141,9 +134,7 @@ class CacheTest extends TestCase
         $this->assertEquals('"my-opaque-etag"', $response->getHeaderLine('ETag'));
     }
 
-    /**
-     * @depends testInitialETagState
-     */
+    #[Depends('testInitialETagState')]
     public function testWeakETag(Cache $cache): void
     {
         $stack = $this->getETagMiddlewareStack($cache);
@@ -159,9 +150,7 @@ class CacheTest extends TestCase
         $this->assertEquals('"my-opaque-etag"', $response->getHeaderLine('ETag'));
     }
 
-    /**
-     * @depends testInitialETagState
-     */
+    #[Depends('testInitialETagState')]
     public function testWrongETag(Cache $cache): void
     {
         $stack = $this->getETagMiddlewareStack($cache);
