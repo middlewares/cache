@@ -14,7 +14,7 @@ Middleware components with the following cache utilities:
 
 ## Requirements
 
-* PHP >= 8.2
+* PHP >= 8.1
 * A [PSR-7 http library](https://github.com/middlewares/awesome-psr15-middlewares#psr-7-implementations)
 * A [PSR-15 middleware dispatcher](https://github.com/middlewares/awesome-psr15-middlewares#dispatcher)
 
